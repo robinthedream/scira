@@ -444,21 +444,20 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
     paragraph(children) {
       if (typeof children === 'string' && children.includes('$')) {
         return (
-          <p className="my-5 leading-relaxed text-neutral-700 dark:text-neutral-300">
+          <p className="my-5 leading-relaxed text-neutral-700 dark:text-neutral-300" key={generateKey()}>
             <Latex
               delimiters={[
                 { left: '$$', right: '$$', display: true },
                 { left: '$', right: '$', display: false }
               ]}
               strict={false}
-              key={generateKey()}
             >
               {children}
             </Latex>
           </p>
         );
       }
-      return <p className="my-5 leading-relaxed text-neutral-700 dark:text-neutral-300">{children}</p>;
+      return <p className="my-5 leading-relaxed text-neutral-700 dark:text-neutral-300" key={generateKey()}>{children}</p>;
     },
     code(children, language) {
       return <CodeBlock language={language} key={generateKey()}>{String(children)}</CodeBlock>;
@@ -472,7 +471,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
       }
       return isValidUrl(href)
         ? renderHoverCard(href, text)
-        : <a href={href} className="text-primary dark:text-primary-light hover:underline font-medium">{text}</a>;
+        : <a href={href} className="text-primary dark:text-primary-light hover:underline font-medium" key={generateKey()}>{text}</a>;
     },
     heading(children, level) {
       const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements;
@@ -486,7 +485,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
       }[level] || "";
 
       return (
-        <HeadingTag className={`${sizeClasses} text-neutral-900 dark:text-neutral-50 tracking-tight`}>
+        <HeadingTag className={`${sizeClasses} text-neutral-900 dark:text-neutral-50 tracking-tight`} key={generateKey()}>
           {children}
         </HeadingTag>
       );
@@ -494,24 +493,24 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
     list(children, ordered) {
       const ListTag = ordered ? 'ol' : 'ul';
       return (
-        <ListTag className={`my-5 pl-6 space-y-2 text-neutral-700 dark:text-neutral-300 ${ordered ? 'list-decimal' : 'list-disc'}`}>
+        <ListTag className={`my-5 pl-6 space-y-2 text-neutral-700 dark:text-neutral-300 ${ordered ? 'list-decimal' : 'list-disc'}`} key={generateKey()}>
           {children}
         </ListTag>
       );
     },
     listItem(children) {
-      return <li className="pl-1 leading-relaxed">{children}</li>;
+      return <li className="pl-1 leading-relaxed" key={generateKey()}>{children}</li>;
     },
     blockquote(children) {
       return (
-        <blockquote className="my-6 border-l-4 border-primary/30 dark:border-primary/20 pl-4 py-1 text-neutral-700 dark:text-neutral-300 italic bg-neutral-50 dark:bg-neutral-900/50 rounded-r-md">
+        <blockquote className="my-6 border-l-4 border-primary/30 dark:border-primary/20 pl-4 py-1 text-neutral-700 dark:text-neutral-300 italic bg-neutral-50 dark:bg-neutral-900/50 rounded-r-md" key={generateKey()}>
           {children}
         </blockquote>
       );
     },
     table(children) {
       return (
-        <div className="w-full my-6 overflow-hidden">
+        <div className="w-full my-6 overflow-hidden" key={generateKey()}>
           <div className="w-full overflow-x-auto border border-neutral-200 dark:border-neutral-800 shadow-sm rounded-sm">
             <table className="table-auto border-collapse divide-y divide-neutral-200 dark:divide-neutral-800 m-0!">
               {children}
@@ -522,7 +521,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
     },
     tableRow(children) {
       return (
-        <tr className="border-b border-neutral-200 dark:border-neutral-800 last:border-0 hover:bg-neutral-50 dark:hover:bg-neutral-800/30">
+        <tr className="border-b border-neutral-200 dark:border-neutral-800 last:border-0 hover:bg-neutral-50 dark:hover:bg-neutral-800/30" key={generateKey()}>
           {children}
         </tr>
       );
@@ -539,7 +538,7 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
           "bg-neutral-100 dark:bg-neutral-800/90",
           "whitespace-nowrap border-b border-neutral-200 dark:border-neutral-700",
           alignClass
-        )}>
+        )} key={generateKey()}>
           {children}
         </th>
       ) : (
@@ -548,21 +547,21 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) => {
           "bg-white dark:bg-neutral-900 border-r border-neutral-100 dark:border-neutral-800 last:border-r-0",
           "leading-relaxed",
           alignClass
-        )}>
+        )} key={generateKey()}>
           {children}
         </td>
       );
     },
     tableHeader(children) {
       return (
-        <thead className="bg-neutral-100 dark:bg-neutral-800/90">
+        <thead className="bg-neutral-100 dark:bg-neutral-800/90" key={generateKey()}>
           {children}
         </thead>
       );
     },
     tableBody(children) {
       return (
-        <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800 bg-white dark:bg-neutral-900">
+        <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800 bg-white dark:bg-neutral-900" key={generateKey()}>
           {children}
         </tbody>
       );
@@ -605,4 +604,4 @@ export const CopyButton = ({ text }: { text: string }) => {
   );
 };
 
-export { MarkdownRenderer, preprocessLaTeX }; 
+export { MarkdownRenderer, preprocessLaTeX };
