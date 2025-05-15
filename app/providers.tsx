@@ -6,8 +6,9 @@ import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
 import { ReactNode } from "react";
 
-if (typeof window !== 'undefined') {
-  posthog.init(clientEnv.NEXT_PUBLIC_POSTHOG_KEY!, {
+// Only initialize PostHog if we have a key
+if (typeof window !== 'undefined' && clientEnv.NEXT_PUBLIC_POSTHOG_KEY) {
+  posthog.init(clientEnv.NEXT_PUBLIC_POSTHOG_KEY, {
     api_host: clientEnv.NEXT_PUBLIC_POSTHOG_HOST,
     person_profiles: 'always',
   })
