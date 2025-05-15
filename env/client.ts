@@ -2,12 +2,18 @@
 import { createEnv } from '@t3-oss/env-nextjs'
 import { z } from 'zod'
 
+const isProduction = process.env.NODE_ENV === 'production'
+
+// Helper function to make variables optional in development
+const envVar = (schema: z.ZodString) => 
+  isProduction ? schema : schema.optional()
+
 export const clientEnv = createEnv({
   client: {
-    NEXT_PUBLIC_MAPBOX_TOKEN: z.string().min(1),
-    NEXT_PUBLIC_POSTHOG_KEY: z.string().min(1),
-    NEXT_PUBLIC_POSTHOG_HOST: z.string().min(1).url(),
-    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: z.string().min(1),
+    NEXT_PUBLIC_MAPBOX_TOKEN: envVar(z.string().min(1)),
+    NEXT_PUBLIC_POSTHOG_KEY: envVar(z.string().min(1)),
+    NEXT_PUBLIC_POSTHOG_HOST: envVar(z.string().min(1).url()),
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: envVar(z.string().min(1)),
   },
   runtimeEnv: {
     NEXT_PUBLIC_MAPBOX_TOKEN: process.env.NEXT_PUBLIC_MAPBOX_TOKEN,
@@ -16,4 +22,3 @@ export const clientEnv = createEnv({
     NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
   },
 })
-
